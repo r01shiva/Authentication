@@ -25,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int MY_REQUEST_CODE = 7117;
     List<AuthUI.IdpConfig> providers;
+    private FirebaseAuth mAuth;
     Button btn_sign_out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
 
         btn_sign_out = (Button)findViewById(R.id.btn_sign_out);
         btn_sign_out.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.PhoneBuilder().build()
         );
 
-        showSignInOption();
+
 
     }
 
@@ -88,5 +90,30 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Toast.makeText(MainActivity.this, "Call on start", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, "Call", Toast.LENGTH_SHORT).show();
+        // Check if user is signed in (non-null) and update UI accordingly.
+
+
+        try {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+
+                Toast.makeText(MainActivity.this, "Call hoga galat", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Le beta bopdike", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, currentUser.getUid(), Toast.LENGTH_SHORT).show();
+                btn_sign_out.setEnabled(true);
+            } else {
+                Toast.makeText(MainActivity.this, "Call", Toast.LENGTH_SHORT).show();
+                showSignInOption();
+            }
+
+        }catch (Exception e){e.printStackTrace();}
+
     }
 }
